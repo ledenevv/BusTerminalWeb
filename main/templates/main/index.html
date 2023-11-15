@@ -1,10 +1,97 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <title>Главная страница</title>
+  <meta charset="UTF-8">
+  <title>Автовокзал</title>
+  <style>
+    /* Стили CSS для страницы */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    
+    .header {
+      background-color: #333;
+      color: #fff;
+      padding: 20px;
+      text-align: center;
+    }
+    
+    .container {
+      max-width: 960px;
+      margin: 20px auto;
+      padding: 0 20px;
+    }
+    
+    .content {
+      margin-top: 20px;
+    }
+    
+    .schedule {
+      border-collapse: collapse;
+      width: 100%;
+    }
+    
+    .schedule th, .schedule td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+    
+    .schedule th {
+      background-color: #f2f2f2;
+      font-weight: bold;
+    }
+    
+    .auth-buttons {
+      text-align: right;
+      margin-bottom: 10px;
+    }
+    
+    .auth-buttons button {
+      margin-left: 10px;
+    }
+  </style>
 </head>
 <body>
-    
+  <header class="header">
+    <h1>Добро пожаловать на автовокзал</h1>
+    <div class="auth-buttons">
+      <button onclick="location.href='login.html'">Войти</button>
+      <button onclick="location.href='register.html'">Зарегистрироваться</button>
+    </div>
+  </header>
+  
+  <div class="container">
+    <div class="content">
+      <h2>Расписание автобусов</h2>
+      <table class="schedule">
+        <thead>
+          <tr>
+            <th>Маршрут</th>
+            <th>Время отправления</th>
+            <th>Время прибытия</th>
+            <th>Цена билета</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Москва - Санкт-Петербург</td>
+            <td>08:00</td>
+            <td>14:00</td>
+            <td>1000 руб.</td>
+          </tr>
+          <tr>
+            <td>Санкт-Петербург - Москва</td>
+            <td>12:00</td>
+            <td>18:00</td>
+            <td>1000 руб.</td>
+          </tr>
+          <!-- Добавьте остальные маршруты -->
+        </tbody>
+      </table>
+    </div>
+  </div>
 </body>
 </html>
