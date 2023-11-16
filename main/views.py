@@ -14,7 +14,7 @@ def login_view(request):
             user = authenticate(username=username, password=password)
             if user is not None:
                 login(request, user)
-                return redirect('home')  # перенаправление на главную страницу после входа
+                return redirect(index)  # перенаправление на главную страницу после входа
     else:
         form = AuthenticationForm()
     return render(request, 'main/login.html', {'form': form})
