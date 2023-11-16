@@ -3,13 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <title>Регистрация</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        
+        .register-box {
+            max-width: 800px;
+            padding: 80px;
+            border-radius: 20px;
+            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
+            background-color: #FAFAFA;
+            margin-top: -100px;
+        }
+        
+        .register-title {
+            font-size: 56px;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .form-group label {
+            font-size: 36px;
+        }
+        
+        .form-group input {
+            font-size: 32px;
+        }
+        
+        .btn {
+            font-size: 36px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Регистрация</h1>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Зарегистрироваться</button>
-    </form>
+    <div class="register-box">
+        <h1 class="register-title">Регистрация</h1>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary btn-block">Зарегистрироваться</button>
+        </form>
+    </div>
 </body>
 </html>
