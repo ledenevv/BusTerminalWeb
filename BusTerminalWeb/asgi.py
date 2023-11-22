@@ -1,5 +1,5 @@
 """
-ASGI config for BusTerminalWeb project.
+ASGI config for CarDealership project.
 
 It exposes the ASGI callable as a module-level variable named ``application``.
 

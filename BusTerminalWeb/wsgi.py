@@ -1,5 +1,5 @@
 """
-WSGI config for BusTerminalWeb project.
+WSGI config for CarDealership project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
