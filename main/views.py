@@ -1,12 +1,16 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth.decorators import login_required
+
 
 def index_view(request):
     return render(request, 'main/index.html')
 
+
 def routes_view(request):
     return render(request, 'main/routes.html')
+
 
 def login_view(request):
     if request.method == 'POST':
@@ -22,6 +26,7 @@ def login_view(request):
         form = AuthenticationForm()
     return render(request, 'main/login.html', {'form': form})
 
+
 def register_view(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
@@ -31,3 +36,8 @@ def register_view(request):
     else:
         form = UserCreationForm()
     return render(request, 'main/register.html', {'form': form})
+
+
+def logout_view(request):
+    logout(request)
+    return redirect(index_view)  # Перенаправьте пользователя на нужную страницу после выхода

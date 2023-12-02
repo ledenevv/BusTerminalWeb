@@ -91,10 +91,10 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav">
         <li class="nav-item active">
-          <a class="nav-link" href="">Главная</a>
+          <a class="nav-link"  href="{% url 'index' %}">Главная</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="routes">Маршруты</a>
+          <a class="nav-link" href="{% url 'routes' %}">Маршруты</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#">Мои билеты</a>
@@ -102,10 +102,22 @@
 
       </ul>
     </div>
+     {% if not user.is_authenticated %}
      <div class="auth-buttons">
-            <button onclick="location.href='login'">Войти</button>
-            <button onclick="location.href='register'">Зарегистрироваться</button>
+            <button onclick="location.href='{% url 'login' %}'">Войти</button>
+            <button onclick="location.href='{% url 'register' %}'">Зарегистрироваться</button>
         </div>
+     {% endif %}
+      {% if user.is_authenticated %}
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link">{{ user.username }}</a>
+        </li>
+      </ul>
+     <div class="auth-buttons">
+            <button onclick="location.href='{% url 'logout' %}'">Выйти</button>
+        </div>
+      {% endif %}
   </nav>
     <div class="container">
         <div class="content">
