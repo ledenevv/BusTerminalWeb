@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Автовокзал</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <title>Редактирование маршрута</title>
+  <!-- Подключение файлов стилей Bootstrap -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
     <style>
         /* Стили CSS для страницы */
         body {
@@ -11,45 +12,45 @@
             margin: 0;
             padding: 0;
         }
-        
+
         .header {
             background-color: #333;
             color: #fff;
             padding: 20px;
             text-align: center;
         }
-        
+
         .container {
             max-width: 960px;
             margin: 20px auto;
             padding: 0 20px;
         }
-        
+
         .content {
             margin-top: 20px;
         }
-        
+
         .schedule {
             border-collapse: collapse;
             width: 100%;
         }
-        
+
         .schedule th, .schedule td {
             border: 1px solid #ddd;
             padding: 8px;
             text-align: left;
         }
-        
+
         .schedule th {
             background-color: #f2f2f2;
             font-weight: bold;
         }
-        
+
         .auth-buttons {
             text-align: right;
             margin-bottom: 10px;
         }
-        
+
         .auth-buttons button {
             margin-left: 10px;
             border-radius: 5px;
@@ -58,13 +59,13 @@
             color: #fff;
             border: none;
         }
-        
+
         .auth-buttons button:hover {
             background-color: #0056b3;
         }
 
         .navigation {
-            
+
             justify-content: space-between;
             align-items: center;
             background-color: #333;
@@ -92,10 +93,10 @@
     }
 
     </style>
+
 </head>
 <body>
-
- <nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand" href="#">Меню</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -138,8 +139,34 @@
         </div>
       {% endif %}
   </nav>
-<div class="welcome-message">
-    <h1>Добро пожаловать!</h1>
+ <div class="container">
+    <h1>Редактирование маршрута</h1>
+
+    <form action="/edit-route" method="post">
+      <!-- Используем csrf-токен для безопасности -->
+      {% csrf_token %}
+
+      <!-- Поля формы для редактирования маршрута -->
+      <div class="mb-3">
+        <label for="route-name" class="form-label">Название маршрута:</label>
+        <input type="text" class="form-control" id="route-name" name="route_name">
+      </div>
+
+      <div class="mb-3">
+        <label for="route-startpoint" class="form-label">Начальная точка маршрута:</label>
+        <textarea class="form-control" id="route-startpoint" name="route_startpoint"></textarea>
+      </div>
+
+       <div class="mb-3">
+        <label for="route-endpoint" class="form-label">Конечная точка маршрута:</label>
+        <textarea class="form-control" id="route-endpoint" name="route_endpoint"></textarea>
+      </div>
+
+      <button type="submit" class="btn btn-primary">Сохранить</button>
+    </form>
   </div>
+
+  <!-- Подключение скриптов Bootstrap -->
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

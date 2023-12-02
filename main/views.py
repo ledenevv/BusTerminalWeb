@@ -41,3 +41,7 @@ def register_view(request):
 def logout_view(request):
     logout(request)
     return redirect(index_view)  # Перенаправьте пользователя на нужную страницу после выхода
+
+
+def edit_routes_view(request):
+    return render(request, template_name='main/editroutes.html')
