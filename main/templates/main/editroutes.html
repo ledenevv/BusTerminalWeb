@@ -140,26 +140,31 @@
       {% endif %}
   </nav>
  <div class="container">
-    <h1>Редактирование маршрута</h1>
+    <h1>Добавление маршрута</h1>
 
-    <form action="/edit-route" method="post">
+    <form action="{% url 'edit_routes' %}" method="post">
       <!-- Используем csrf-токен для безопасности -->
       {% csrf_token %}
 
       <!-- Поля формы для редактирования маршрута -->
       <div class="mb-3">
-        <label for="route-name" class="form-label">Название маршрута:</label>
-        <input type="text" class="form-control" id="route-name" name="route_name">
+        <label for="name" class="form-label">Название маршрута:</label>
+        <input type="text" class="form-control" id="name" name="name">
       </div>
 
       <div class="mb-3">
-        <label for="route-startpoint" class="form-label">Начальная точка маршрута:</label>
-        <textarea class="form-control" id="route-startpoint" name="route_startpoint"></textarea>
+        <label for="start_point" class="form-label">Начальная точка маршрута:</label>
+        <input type="text" class="form-control" id="start_point" name="start_point">
+      </div>
+
+        <div class="mb-3">
+        <label for="end_point" class="form-label">Конечная точка маршрута:</label>
+        <input type="text" class="form-control" id="end_point" name="end_point">
       </div>
 
        <div class="mb-3">
-        <label for="route-endpoint" class="form-label">Конечная точка маршрута:</label>
-        <textarea class="form-control" id="route-endpoint" name="route_endpoint"></textarea>
+        <label for="schedule" class="form-label">Дата маршрута:</label>
+        <input type="datetime-local" class="form-control" id="schedule" name="schedule">
       </div>
 
       <button type="submit" class="btn btn-primary">Сохранить</button>
