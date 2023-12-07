@@ -10,7 +10,8 @@ def index_view(request):
 
 
 def routes_view(request):
-    return render(request, 'main/routes.html')
+    routes = Route.objects.all()
+    return render(request, 'main/routes.html', {'routes': routes})
 
 
 def login_view(request):
@@ -50,9 +51,10 @@ def edit_routes_view(request):
             start_point = request.POST.get('start_point')
             end_point = request.POST.get('end_point')
             schedule = request.POST.get('schedule')
+            price = request.POST.get('price')
 
             route = Route(name=name, start_point=start_point, end_point=end_point,
-                          schedule=schedule)
+                          schedule=schedule, price=price)
             route.save()
 
             return redirect('routes')  # Перенаправляем пользователя на страницу со списком маршрутов

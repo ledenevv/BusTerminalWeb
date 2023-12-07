@@ -1,17 +1,18 @@
 from django.contrib.auth.models import User
 from django.db import models
 
-class Bus(models.Model):
-    number = models.CharField(max_length=20)
-    model = models.CharField(max_length=100)
-    capacity = models.PositiveIntegerField()
-    last_maintenance_date = models.DateField()
+# class Bus(models.Model):
+#     number = models.CharField(max_length=20)
+#     model = models.CharField(max_length=100)
+#     capacity = models.PositiveIntegerField()
+#     last_maintenance_date = models.DateField()
 
 class Route(models.Model):
     name = models.CharField(max_length=100)
     start_point = models.CharField(max_length=100)
     end_point = models.CharField(max_length=100)
     schedule = models.DateTimeField(null=True, default=None)
+    price = models.CharField(max_length=6, null=True, default=None)
 
 # class Passenger(models.Model):
 #     first_name = models.CharField(max_length=100)
@@ -24,9 +25,9 @@ class Route(models.Model):
 class Ticket(models.Model):
     passenger = models.ForeignKey(User, on_delete=models.CASCADE)
     route = models.ForeignKey(Route, on_delete=models.CASCADE)
-    bus = models.ForeignKey(Bus, on_delete=models.CASCADE)
+    # bus = models.ForeignKey(Bus, on_delete=models.CASCADE)
     purchase_date = models.DateTimeField()
-    price = models.DecimalField(max_digits=8, decimal_places=2)
+
 
 # class Station(models.Model):
 #     name = models.CharField(max_length=100)

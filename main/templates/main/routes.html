@@ -34,21 +34,29 @@
 </head>
 <body>
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">Меню</a>
+    <a class="navbar-brand">Автовокзал</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav">
-        <li class="nav-item active">
+        <li class="nav-item">
           <a class="nav-link" href="{% url 'index' %}">Главная</a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item active">
           <a class="nav-link" href="{% url 'routes' %}">Маршруты</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#">Мои билеты</a>
         </li>
+        {% if user.is_staff %}
+           <li class="nav-item">
+          <a class="nav-link" href="{% url 'edit_routes' %}">Настройка маршрутов</a>
+        </li>
+          <li class="nav-item">
+          <a class="nav-link" href="{% url 'admin:index' %}">Админ-панель</a>
+        </li>
+          {% endif %}
       </ul>
     </div>
 {% if not user.is_authenticated %}
@@ -70,33 +78,18 @@
   </nav>
   <div class="container">
     <h1>Список маршрутов</h1>
+    {% for route in routes %}
     <div class="card mb-3">
       <div class="card-body">
-        <h5 class="card-title">Маршрут 1</h5>
-        <p class="card-text">Откуда: Автовокзал А</p>
-        <p class="card-text">Куда: Город X</p>
-        <p class="card-text">Время приезда: 10:00</p>
+        <h5 class="card-title">{{ route.name }}</h5>
+        <p class="card-text">Откуда: {{ route.start_point }}</p>
+        <p class="card-text">Куда: {{ route.end_point }}</p>
+        <p class="card-text">Дата отъезда: {{ route.schedule }}</p>
+        <p class="card-text">Цена: {{ route.price }}</p>
         <a href="#" class="btn btn-primary">Купить билет</a>
       </div>
     </div>
-    <div class="card mb-3">
-      <div class="card-body">
-        <h5 class="card-title">Маршрут 2</h5>
-        <p class="card-text">Откуда: Автовокзал Б</p>
-        <p class="card-text">Куда: Город Y</p>
-        <p class="card-text">Время приезда: 12:00</p>
-        <a href="#" class="btn btn-primary">Купить билет</a>
-      </div>
-    </div>
-    <div class="card mb-3">
-      <div class="card-body">
-        <h5 class="card-title">Маршрут 3</h5>
-        <p class="card-text">Откуда: Автовокзал В</p>
-        <p class="card-text">Куда: Город Z</p>
-        <p class="card-text">Время приезда: 15:00</p>
-        <a href="#" class="btn btn-primary">Купить билет</a>
-      </div>
-    </div>
+    {% endfor %}
   </div>
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
