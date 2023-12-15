@@ -79,16 +79,24 @@
   <div class="container">
     <h1>Список маршрутов</h1>
     {% for route in routes %}
+      <form action="{% url 'routes' %}" method="post">
     <div class="card mb-3">
       <div class="card-body">
-        <h5 class="card-title">{{ route.name }}</h5>
-        <p class="card-text">Откуда: {{ route.start_point }}</p>
-        <p class="card-text">Куда: {{ route.end_point }}</p>
-        <p class="card-text">Дата отъезда: {{ route.schedule }}</p>
-        <p class="card-text">Цена: {{ route.price }}</p>
-        <a href="#" class="btn btn-primary">Купить билет</a>
+        <h5 class="card-title" id="name">{{ route.name }}</h5>
+          <p class="card-text" id="route_id">ID: {{ route.id }}</p>
+        <p class="card-text" id="start_point">Откуда: {{ route.start_point }}</p>
+        <p class="card-text" id="end_point">Куда: {{ route.end_point }}</p>
+        <p class="card-text" id="schedule">Дата отъезда: {{ route.schedule }}</p>
+        <p class="card-text" id="price">Цена: {{ route.price }}</p>
+
+      <!-- Используем csrf-токен для безопасности -->
+      {% csrf_token %}
+          <input type="hidden" name="route_id" value="{{ route.id }}">
+         <button type="submit" class="btn btn-primary">Купить</button>
+
       </div>
     </div>
+          </form>
     {% endfor %}
   </div>
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

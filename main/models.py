@@ -26,7 +26,7 @@ class Ticket(models.Model):
     passenger = models.ForeignKey(User, on_delete=models.CASCADE)
     route = models.ForeignKey(Route, on_delete=models.CASCADE)
     # bus = models.ForeignKey(Bus, on_delete=models.CASCADE)
-    purchase_date = models.DateTimeField()
+    # purchase_date = models.DateTimeField()
 
 
 # class Station(models.Model):

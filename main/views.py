@@ -2,7 +2,8 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
-from main.models import Route
+from main.models import Route, Ticket
+from django.contrib.auth.models import User
 
 
 def index_view(request):
@@ -11,6 +12,12 @@ def index_view(request):
 
 def routes_view(request):
     routes = Route.objects.all()
+    if request.method == 'POST':
+        user = request.user
+        route = request.POST.get('route_id')
+        ticket = Ticket.objects.create(passenger=user, route=route)
+
+        return redirect('routes')
     return render(request, 'main/routes.html', {'routes': routes})
 
 
