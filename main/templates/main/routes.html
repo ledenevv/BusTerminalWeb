@@ -30,6 +30,41 @@
         .auth-buttons button:hover {
             background-color: #0056b3;
         }
+       /* Стили для модального окна */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.4);
+    }
+
+    .modal-content {
+        background-color: #fefefe;
+        margin: 15% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+    }
+
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
   </style>
 </head>
 <body>
@@ -80,12 +115,19 @@
   </nav>
   <div class="container">
     <h1>Список маршрутов</h1>
+      {% if routes %}
     {% for route in routes %}
       {% if user.is_authenticated %}
       <form action="{% url 'routes' %}" method="post" class="edit-mode">
            {% endif %}
     <div class="card mb-3">
       <div class="card-body">
+          {% if route.status == 'Ожидает' %}
+          <span class="badge badge-success">{{ route.status }}</span>
+          {% else %}
+          <span class="badge badge-danger">{{ route.status }}</span>
+          {% endif %}
+          <p></p>
         <h5 class="card-title" id="name">{{ route.name }}</h5>
           <p class="card-text" id="route_id">ID: {{ route.id }}</p>
         <p class="card-text" id="start_point">Откуда: {{ route.start_point }}</p>
@@ -96,44 +138,81 @@
       <!-- Используем csrf-токен для безопасности -->
       {% csrf_token %}
           {% if user.is_authenticated %}
+          {% if route.status == 'Ожидает' %}
           <input type="hidden" name="route_id" value="{{ route.id }}">
-
          <button type="submit" class="btn btn-primary" name="buy_ticket">Купить</button>
-          {% if user.is_staff %}
-          <button type="submit" class="btn btn-danger" name="delete_route">Удалить маршрут</button>
+          {% endif %}
+       {% if user.is_staff %}
+         <!-- Модальное окно -->
+<div id="editModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <!-- Поля для редактирования маршрута -->
+        <form action="{% url 'routes' %}" method="post">
             {% csrf_token %}
-    <input type="hidden" name="route_id" value="{{ route.id }}">
-    <!-- Поля для редактирования маршрута -->
-    <input type="text" name="name" value="{{ route.name }}">
-    <input type="text" name="start_point" value="{{ route.start_point }}">
-    <input type="text" name="end_point" value="{{ route.end_point }}">
-    <input type="datetime-local" name="schedule" value="{{ route.schedule }}">
-    <input type="text" name="price" value="{{ route.price }}">
-    <button type="submit" name="edit_route" class="btn btn-secondary">Сохранить</button>
+            <input type="hidden" name="route_id" value="{{ route.id }}">
+            <input type="text" name="name" value="{{ route.name }}">
+            <input type="text" name="start_point" value="{{ route.start_point }}">
+            <input type="text" name="end_point" value="{{ route.end_point }}">
+            <input type="datetime-local" name="schedule" value="{{ route.schedule }}">
+            <input type="text" name="price" value="{{ route.price }}">
+            <button type="submit" name="edit_route" class="btn btn-secondary">Сохранить</button>
+        </form>
+    </div>
+</div>
+            {% csrf_token %}
+    <button type="button" class="btn btn-secondary edit-button">Редактировать</button>
+          <button type="submit" class="btn btn-danger" name="delete_route">Удалить маршрут</button>
           {% endif %}
       {% endif %}
       {% if not user.is_authenticated %}
          <button onclick="location.href='{% url 'login' %}'" class="btn btn-primary">Купить</button>
       {% endif %}
+          {% if route.status == 'Проведен' %}
+          <p></p>
+          <div class="alert alert-secondary" role="alert">
+  К сожалению, больше билеты купить нельзя :(
+</div>
+          {% endif %}
       </div>
     </div>
           {% if user.is_authenticated %}
      </form>
        {% endif %}
     {% endfor %}
+
   </div>
+  {% else %}
+       <div class="alert alert-primary" role="alert">
+  Пока что рейсов нету :(
+</div>
+      {% endif %}
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+        var modal = document.getElementById('editModal');
         var editButtons = document.querySelectorAll('.edit-button');
+        var closeButtons = document.querySelectorAll('.close');
+
         for (var i = 0; i < editButtons.length; i++) {
             editButtons[i].addEventListener('click', function() {
-                var form = this.parentNode;
-                form.classList.toggle('edit-mode');
+                modal.style.display = 'block';
             });
         }
+
+        for (var i = 0; i < closeButtons.length; i++) {
+            closeButtons[i].addEventListener('click', function() {
+                modal.style.display = 'none';
+            });
+        }
+
+        window.addEventListener('click', function(event) {
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        });
     });
 </script>
 </body>

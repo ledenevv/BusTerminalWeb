@@ -78,13 +78,28 @@
   </nav>
   <div class="container">
     <h1>Мои билеты</h1>
+     <div class="card">
+  <div class="card-body">
+    При посадке на автобус предъявляйте билет водителю. Водитель должен увидеть номер билета,а так же ваш логин на сайте.
+  </div>
+</div>
+      <p></p>
+      {% if tickets %}
     {% for ticket in tickets %}
       <form action="{% url 'mytickets' %}" method="post">
     <div class="card mb-3">
       <div class="card-body">
-        <h5 class="card-title" id="ticket_id">{{ ticket.id }}</h5>
-          <p class="card-text" id="route_id">ID route: {{ ticket.route_id }}</p>
-          <p class="card-text" id="passenger_id">ID passenger: {{ ticket.passenger_id }}</p>
+        <h5 class="card-title" id="ticket_id">Билет № {{ ticket.id }}</h5>
+          <p class="card-text">Информация о маршруте</p>
+          {% for route in routes %}
+          {% if route.id == ticket.route_id %}
+          <p class="card-text" id="route_name">Название: {{ route.name }}</p>
+          <p class="card-text" id="route_start_point">Отправная точка: {{ route.start_point }}</p>
+          <p class="card-text" id="route_end_point">Конечная точка: {{ route.end_point }}</p>
+          <p class="card-text" id="route_schedule">Дата выезда: {{ route.schedule }}</p>
+          <p class="card-text" id="route_price">Цена: {{ route.price }}</p>
+          {% endif %}
+          {% endfor %}
             {% csrf_token %}
           <input type="hidden" name="ticket_id" value="{{ ticket.id }}">
          <button type="submit" class="btn btn-danger">Отменить билет</button>
@@ -93,6 +108,11 @@
 
           </form>
     {% endfor %}
+      {% else %}
+   <div class="alert alert-primary" role="alert">
+  У вас пока нету билетов :(
+</div>
+      {% endif %}
   </div>
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>

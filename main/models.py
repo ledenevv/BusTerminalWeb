@@ -13,6 +13,7 @@ class Route(models.Model):
     end_point = models.CharField(max_length=100)
     schedule = models.DateTimeField(null=True, default=None)
     price = models.CharField(max_length=6, null=True, default=None)
+    status =  models.CharField(max_length=30, default='Ожидает')
 
 # class Passenger(models.Model):
 #     first_name = models.CharField(max_length=100)

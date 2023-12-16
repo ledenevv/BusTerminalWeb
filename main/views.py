@@ -5,6 +5,7 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from main.models import Route, Ticket
 from django.contrib.auth.models import User
+from datetime import datetime
 
 
 def index_view(request):
@@ -13,11 +14,12 @@ def index_view(request):
 
 def mytickets_view(request):
     tickets = Ticket.objects.filter(passenger_id=request.user)
+    routes = Route.objects.all()
     if request.method == 'POST':
         ticket_id = request.POST.get('ticket_id')
         ticket = Ticket.objects.get(id=ticket_id)
         ticket.delete()
-    return render(request, 'main/mytickets.html', {'tickets': tickets})
+    return render(request, 'main/mytickets.html', {'tickets': tickets, 'routes': routes})
 
 
 def routes_view(request):
@@ -60,7 +62,14 @@ def routes_view(request):
                 return redirect('routes')
             except Route.DoesNotExist:
                 pass
-    return render(request, 'main/routes.html', {'routes': routes})
+    current_datetime = datetime.now()
+    for route in routes:
+        if current_datetime >= route.schedule.replace(tzinfo=None):
+            route.status = 'Проведен'
+        else:
+            route.status = 'Ожидает'
+        route.save()
+    return render(request, 'main/routes.html', {'routes': routes, 'current_datetime': current_datetime})
 
 
 def login_view(request):
