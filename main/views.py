@@ -13,9 +13,9 @@ def index_view(request):
 def routes_view(request):
     routes = Route.objects.all()
     if request.method == 'POST':
-        user = request.user
+        user = request.user.id
         route = request.POST.get('route_id')
-        ticket = Ticket.objects.create(passenger=user, route=route)
+        ticket = Ticket.objects.create(passenger_id=user, route_id=route)
 
         return redirect('routes')
     return render(request, 'main/routes.html', {'routes': routes})
