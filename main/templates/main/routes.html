@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Автовокзал</title>
+  <title>Маршруты</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
@@ -45,10 +45,12 @@
         </li>
         <li class="nav-item active">
           <a class="nav-link" href="{% url 'routes' %}">Маршруты</a>
+        {% if user.is_authenticated %}
         </li>
         <li class="nav-item">
           <a class="nav-link" href="{% url 'mytickets' %}">Мои билеты</a>
         </li>
+        {% endif %}
         {% if user.is_staff %}
            <li class="nav-item">
           <a class="nav-link" href="{% url 'edit_routes' %}">Настройка маршрутов</a>
@@ -79,7 +81,9 @@
   <div class="container">
     <h1>Список маршрутов</h1>
     {% for route in routes %}
-      <form action="{% url 'routes' %}" method="post">
+      {% if user.is_authenticated %}
+      <form action="{% url 'routes' %}" method="post" class="edit-mode">
+           {% endif %}
     <div class="card mb-3">
       <div class="card-body">
         <h5 class="card-title" id="name">{{ route.name }}</h5>
@@ -91,16 +95,46 @@
 
       <!-- Используем csrf-токен для безопасности -->
       {% csrf_token %}
+          {% if user.is_authenticated %}
           <input type="hidden" name="route_id" value="{{ route.id }}">
-         <button type="submit" class="btn btn-primary">Купить</button>
 
+         <button type="submit" class="btn btn-primary" name="buy_ticket">Купить</button>
+          {% if user.is_staff %}
+          <button type="submit" class="btn btn-danger" name="delete_route">Удалить маршрут</button>
+            {% csrf_token %}
+    <input type="hidden" name="route_id" value="{{ route.id }}">
+    <!-- Поля для редактирования маршрута -->
+    <input type="text" name="name" value="{{ route.name }}">
+    <input type="text" name="start_point" value="{{ route.start_point }}">
+    <input type="text" name="end_point" value="{{ route.end_point }}">
+    <input type="datetime-local" name="schedule" value="{{ route.schedule }}">
+    <input type="text" name="price" value="{{ route.price }}">
+    <button type="submit" name="edit_route" class="btn btn-secondary">Сохранить</button>
+          {% endif %}
+      {% endif %}
+      {% if not user.is_authenticated %}
+         <button onclick="location.href='{% url 'login' %}'" class="btn btn-primary">Купить</button>
+      {% endif %}
       </div>
     </div>
-          </form>
+          {% if user.is_authenticated %}
+     </form>
+       {% endif %}
     {% endfor %}
   </div>
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var editButtons = document.querySelectorAll('.edit-button');
+        for (var i = 0; i < editButtons.length; i++) {
+            editButtons[i].addEventListener('click', function() {
+                var form = this.parentNode;
+                form.classList.toggle('edit-mode');
+            });
+        }
+    });
+</script>
 </body>
 </html>

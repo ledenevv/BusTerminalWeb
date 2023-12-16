@@ -23,11 +23,43 @@ def mytickets_view(request):
 def routes_view(request):
     routes = Route.objects.all()
     if request.method == 'POST':
-        user = request.user.id
-        route = request.POST.get('route_id')
-        ticket = Ticket.objects.create(passenger_id=user, route_id=route)
-        messages.success(request, 'Вы купили билет!')
-        return redirect('routes')
+        if 'buy_ticket' in request.POST:
+            user_id = request.user.id
+            route_id = request.POST.get('route_id')
+            ticket = Ticket.objects.create(passenger_id=user_id, route_id=route_id)
+            return redirect('routes')
+        elif 'delete_route' in request.POST:
+            route_id = request.POST.get('route_id')
+            try:
+                route = Route.objects.get(id=route_id)
+                route.delete()
+                return redirect('routes')
+            except Route.DoesNotExist:
+                pass
+        elif 'edit_route' in request.POST:
+            route_id = request.POST.get('route_id')
+            try:
+                route = Route.objects.get(id=route_id)
+                # Получаем данные из POST-запроса для редактирования
+                name = request.POST.get('name')
+                start_point = request.POST.get('start_point')
+                end_point = request.POST.get('end_point')
+                schedule = request.POST.get('schedule')
+                price = request.POST.get('price')
+
+                # Применяем изменения к объекту маршрута
+                route.name = name
+                route.start_point = start_point
+                route.end_point = end_point
+                route.schedule = schedule
+                route.price = price
+
+                # Сохраняем обновленный маршрут
+                route.save()
+
+                return redirect('routes')
+            except Route.DoesNotExist:
+                pass
     return render(request, 'main/routes.html', {'routes': routes})
 
 
