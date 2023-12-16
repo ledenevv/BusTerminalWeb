@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth import login, authenticate, logout
@@ -10,13 +11,22 @@ def index_view(request):
     return render(request, 'main/index.html')
 
 
+def mytickets_view(request):
+    tickets = Ticket.objects.filter(passenger_id=request.user)
+    if request.method == 'POST':
+        ticket_id = request.POST.get('ticket_id')
+        ticket = Ticket.objects.get(id=ticket_id)
+        ticket.delete()
+    return render(request, 'main/mytickets.html', {'tickets': tickets})
+
+
 def routes_view(request):
     routes = Route.objects.all()
     if request.method == 'POST':
         user = request.user.id
         route = request.POST.get('route_id')
         ticket = Ticket.objects.create(passenger_id=user, route_id=route)
-
+        messages.success(request, 'Вы купили билет!')
         return redirect('routes')
     return render(request, 'main/routes.html', {'routes': routes})
 

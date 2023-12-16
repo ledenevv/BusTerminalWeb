@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Автовокзал</title>
+  <title>Мои билеты</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
@@ -43,10 +43,10 @@
         <li class="nav-item">
           <a class="nav-link" href="{% url 'index' %}">Главная</a>
         </li>
-        <li class="nav-item active">
+        <li class="nav-item">
           <a class="nav-link" href="{% url 'routes' %}">Маршруты</a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item active">
           <a class="nav-link" href="{% url 'mytickets' %}">Мои билеты</a>
         </li>
         {% if user.is_staff %}
@@ -77,25 +77,20 @@
       {% endif %}
   </nav>
   <div class="container">
-    <h1>Список маршрутов</h1>
-    {% for route in routes %}
-      <form action="{% url 'routes' %}" method="post">
+    <h1>Мои билеты</h1>
+    {% for ticket in tickets %}
+      <form action="{% url 'mytickets' %}" method="post">
     <div class="card mb-3">
       <div class="card-body">
-        <h5 class="card-title" id="name">{{ route.name }}</h5>
-          <p class="card-text" id="route_id">ID: {{ route.id }}</p>
-        <p class="card-text" id="start_point">Откуда: {{ route.start_point }}</p>
-        <p class="card-text" id="end_point">Куда: {{ route.end_point }}</p>
-        <p class="card-text" id="schedule">Дата отъезда: {{ route.schedule }}</p>
-        <p class="card-text" id="price">Цена: {{ route.price }}</p>
-
-      <!-- Используем csrf-токен для безопасности -->
-      {% csrf_token %}
-          <input type="hidden" name="route_id" value="{{ route.id }}">
-         <button type="submit" class="btn btn-primary">Купить</button>
-
+        <h5 class="card-title" id="ticket_id">{{ ticket.id }}</h5>
+          <p class="card-text" id="route_id">ID route: {{ ticket.route_id }}</p>
+          <p class="card-text" id="passenger_id">ID passenger: {{ ticket.passenger_id }}</p>
+            {% csrf_token %}
+          <input type="hidden" name="ticket_id" value="{{ ticket.id }}">
+         <button type="submit" class="btn btn-danger">Отменить билет</button>
       </div>
     </div>
+
           </form>
     {% endfor %}
   </div>
