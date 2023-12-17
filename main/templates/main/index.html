@@ -20,9 +20,7 @@
         }
         
         .container {
-            max-width: 960px;
-            margin: 20px auto;
-            padding: 0 20px;
+            margin-bottom: 20px;
         }
         
         .content {
@@ -140,8 +138,11 @@
         </div>
       {% endif %}
   </nav>
+
 <div class="welcome-message">
-    <h1>Добро пожаловать!</h1>
+    {% load static %}
+    <img src="{% static 'images/bus.png' %}" height="700px" width="1300px" alt="Bus">
   </div>
+
 </body>
 </html>
