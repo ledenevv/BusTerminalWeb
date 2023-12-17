@@ -19,6 +19,7 @@ def mytickets_view(request):
         ticket_id = request.POST.get('ticket_id')
         ticket = Ticket.objects.get(id=ticket_id)
         ticket.delete()
+
     return render(request, 'main/mytickets.html', {'tickets': tickets, 'routes': routes})
 
 
