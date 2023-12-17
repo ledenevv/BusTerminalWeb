@@ -145,7 +145,11 @@
           {% endif %}
        {% if user.is_staff %}
          <!-- Модальное окно -->
-<div id="editModal" class="modal">
+
+            {% csrf_token %}
+          <input type="hidden" name="route_id" value="{{ route.id }}">
+    <button type="button" class="btn btn-secondary edit-button" name="edit_route">Редактировать</button>
+          <div id="editModal" class="modal">
     <div class="modal-content">
         <span class="close">&times;</span>
         <!-- Поля для редактирования маршрута -->
@@ -161,14 +165,14 @@
         </form>
     </div>
 </div>
-            {% csrf_token %}
-    <button type="button" class="btn btn-secondary edit-button">Редактировать</button>
           <button type="submit" class="btn btn-danger" name="delete_route">Удалить маршрут</button>
           {% endif %}
       {% endif %}
-      {% if not user.is_authenticated %}
-         <button onclick="location.href='{% url 'login' %}'" class="btn btn-primary">Купить</button>
 
+      {% if not user.is_authenticated %}
+          {% if route.status == 'Ожидает' %}
+         <button onclick="location.href='{% url 'login' %}'" class="btn btn-primary">Купить</button>
+          {% endif %}
       {% endif %}
           {% if route.status == 'Проведен' %}
           <p></p>

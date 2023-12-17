@@ -26,7 +26,6 @@
             color: #fff;
             border: none;
         }
-
         .auth-buttons button:hover {
             background-color: #0056b3;
         }
@@ -89,17 +88,10 @@
       <form action="{% url 'mytickets' %}" method="post">
     <div class="card mb-3">
       <div class="card-body">
-          {% for route in routes %}
-           {% if route.status == 'Ожидает' %}
-          <span class="badge badge-success">{{ route.status }}</span>
-          {% else %}
-          <span class="badge badge-danger">{{ route.status }}</span>
-          {% endif %}
-          {% endfor %}
-          <p></p>
         <h5 class="card-title" id="ticket_id">Билет № {{ ticket.id }}</h5>
           <p class="card-text">Информация о маршруте</p>
           {% for route in routes %}
+
           {% if route.id == ticket.route_id %}
           <p class="card-text" id="route_name">Название: {{ route.name }}</p>
           <p class="card-text" id="route_start_point">Отправная точка: {{ route.start_point }}</p>
@@ -109,17 +101,8 @@
           {% endif %}
           {% endfor %}
             {% csrf_token %}
-          {% for route in routes %}
-          {% if route.status == 'Ожидает' %}
           <input type="hidden" name="ticket_id" value="{{ ticket.id }}">
          <button type="submit" class="btn btn-danger">Отменить билет</button>
-          {% else %}
-          <p></p>
-          <div class="alert alert-secondary" role="alert">
-  Автобус отправлен.
-</div>
-          {% endif %}
-          {% endfor %}
       </div>
     </div>
 
